@@ -2,7 +2,7 @@ import Button from "@/components/commons/Button";
 import Loading from "@/components/commons/Loading";
 import MovieCard from "@/components/commons/MovieCard";
 import { MoviesProps } from "@/interfaces";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 
 interface MProps {
@@ -17,7 +17,8 @@ const Movies: React.FC<MProps> = () => {
   const [movies, setMovies] = useState<MoviesProps[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
- const fetchMovies = useCallback(async () => {
+useEffect(() => {
+  const fetchMovies = async () => {
     setLoading(true)
     const response = await fetch('/api/fetch-movies', {
       method: 'POST',
@@ -41,12 +42,10 @@ const Movies: React.FC<MProps> = () => {
     console.log(results)
     setMovies(results)
     setLoading(false)
-  }, [page, year, genre])
+  }
 
-
-  useEffect(() => {
-    fetchMovies()
-  }, [fetchMovies])
+  fetchMovies()
+}, [page, year, genre])
 
 
 
@@ -62,6 +61,7 @@ const Movies: React.FC<MProps> = () => {
       />
 
       <select
+        aria-label="Filter movies by year"
         onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setYear(Number(event.target.value))}
         className="border-2 border-[#E2D609] outline-none bg-transparent px-4 md:px-8 py-2 mt-4 md:mt-0 rounded-full w-full md:w-auto"
       >
@@ -79,8 +79,8 @@ const Movies: React.FC<MProps> = () => {
       <h1 className="text-lg md:text-6xl font-bold">{year} {genre} Movie List</h1>
       <div className="flex flex-wrap space-x-0 md:space-x-4 mt-4 md:mt-0">
         {
-          ['All', 'Animation', 'Comedy', 'Fantasy'].map((genre: string, key: number) => (
-            <Button title={genre} key={key} action={() => setGenre(genre)} />
+          ['All', 'Animation', 'Comedy', 'Fantasy'].map((genre: string) => (
+            <Button title={genre} key={genre} action={() => setGenre(genre)} />
           ))
         }
       </div>
@@ -89,12 +89,12 @@ const Movies: React.FC<MProps> = () => {
     {/* Movies output */}
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mt-10">
       {
-        movies?.map((movie: MoviesProps, key: number) => (
+        movies?.map((movie: MoviesProps) => (
           <MovieCard
             title={movie?.titleText.text}
             posterImage={movie?.primaryImage?.url}
             releaseYear={movie?.releaseYear.year}
-            key={key}
+            key={movie?.id || `${movie?.titleText.text}-${movie?.releaseYear.year}`}
           />
         ))
       }
