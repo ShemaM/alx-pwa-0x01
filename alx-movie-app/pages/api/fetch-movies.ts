@@ -77,8 +77,6 @@ const extractCandidates = (payload: RapidMoviesPayload): RapidMovie[] => {
 const buildMovies = (payload: RapidMoviesPayload): MoviesProps[] => {
   const candidates = extractCandidates(payload);
 
-  if (!Array.isArray(candidates)) return [];
-
   return candidates.map((movie, index) => {
     const posterPath =
       movie?.primaryImage?.url ||
@@ -102,10 +100,13 @@ const buildMovies = (payload: RapidMoviesPayload): MoviesProps[] => {
 
     return {
       id:
-        movie?.id?.toString?.() ||
-        movie?.tmdb_id?.toString?.() ||
-        movie?.imdb_id?.toString?.() ||
-        `movie-${index}`,
+        movie?.id != null
+          ? String(movie.id)
+          : movie?.tmdb_id != null
+            ? String(movie.tmdb_id)
+            : movie?.imdb_id != null
+              ? String(movie.imdb_id)
+              : `movie-${index}`,
       primaryImage: { url: posterPath || FALLBACK_POSTER },
       titleText: {
         text:
