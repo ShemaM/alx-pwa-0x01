@@ -14,6 +14,15 @@ pnpm dev
 bun dev
 ```
 
+Create a `.env.local` file before fetching movies:
+
+```
+MOVIE_API_KEY=your_rapidapi_key
+# Optional overrides if you use a different RapidAPI endpoint
+MOVIE_API_HOST=tmdb-movies-and-tv-shows-api-by-apirobots.p.rapidapi.com
+MOVIE_API_URL=https://tmdb-movies-and-tv-shows-api-by-apirobots.p.rapidapi.com/v1/tmdb/random
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
