@@ -82,7 +82,9 @@ const buildMovies = (payload: RapidMoviesPayload): MoviesProps[] => {
       movie?.primaryImage?.url ||
       movie?.image ||
       movie?.posterImage ||
-      (movie?.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "") ||
+      (movie?.poster_path
+        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+        : undefined) ||
       FALLBACK_POSTER;
 
     const releaseValue =
@@ -107,7 +109,7 @@ const buildMovies = (payload: RapidMoviesPayload): MoviesProps[] => {
             : movie?.imdb_id != null
               ? String(movie.imdb_id)
               : `movie-${index}`,
-      primaryImage: { url: posterPath || FALLBACK_POSTER },
+      primaryImage: { url: posterPath },
       titleText: {
         text:
           movie?.titleText?.text ||
@@ -165,6 +167,6 @@ export default async function handler(
     });
   } else {
     response.setHeader("Allow", ["POST"]);
-    response.status(405).end(`Method ${request.method} Not Allowed in here`);
+    response.status(405).end(`Method ${request.method} Not Allowed`);
   }
 }
