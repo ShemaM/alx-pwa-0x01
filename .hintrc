@@ -10,6 +10,14 @@
       }
     ],
     "no-inline-styles": "off",
-    "typescript-config/consistent-casing": "off"
-  }
+    "typescript-config/consistent-casing": "off",
+    "apple-touch-icons": "off"
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not and_ff <= 142",
+    "not firefox <= 142",
+    "not opera <= 121"
+  ]
 }
